@@ -115,8 +115,7 @@ def one_sample(row):
         sample_name=row[0].split("_")[0]
         r1=os.path.join(fastqs_path,row[0])
         r2=os.path.join(fastqs_path,row[1])
-        fasta=os.path.join(fastqs_path,row[2])
-    
+        fasta=os.path.join(fastas_folder,row[2])
         contigs_res=contigs_checker(fasta,len_ref)
         fastq_r1_res=qc_fastq(r1,len_ref)
         fastq_r2_res=qc_fastq(r2,len_ref)

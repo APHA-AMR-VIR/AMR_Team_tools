@@ -1,17 +1,17 @@
 ## folder to the fastq files
-fastqs_path='/home/javiernunezgarcia/try'
+fastqs_path='/home/javiernunezgarcia/mnt/fsx-016/javi_temp/fastq'
 
 ## folder to the fasta files
-fastas_folder='/home/javiernunezgarcia/try'
+fastas_folder='/home/javiernunezgarcia/mnt/fsx-016/javi_temp/fastq/uc_fastas'
 
 ## pattern to differentiate the R1 fastq files
 R1_pattern="_R1"
 
 ## reference genome
-reference_genome="/home/javiernunezgarcia/mnt/fsx-016/BactiPipes_MA2017/NCBI_Genomes/E.coli_MG1655_U00096.3.fasta"
+reference_genome="/home/javiernunezgarcia/mnt/fsx-016/BactiPipes_MA2017/NCBI_Genomes/C.jejuni_NCTC11168_ATCC700819_NC002163.fasta"
 
 ## path and name of the documents that will contain the results
-out_file='/home/javiernunezgarcia/try/qc.csv'
+out_file='/home/javiernunezgarcia/try/robert'
 
 ## number of cores you want to use
-ncores=2
+ncores=1
