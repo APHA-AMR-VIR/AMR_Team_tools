@@ -142,7 +142,7 @@ if len(args)>1:
     arguments_file=args[1]
 
 else:
-    arguments_file="/home/javiernunezgarcia/APHASeq_qc/seq_qc_arguments_template.args"
+    arguments_file="/home/javiernunezgarcia/AMR_Team_tools/seq_qc_arguments_template.args"
     print("Argument file not given or doesn't exist. Please re run with /full/path/to/arguments/file/arguments_file.args")
     #sys.exit()
 
@@ -154,15 +154,6 @@ with open(arguments_file,'r') as f:
             print('Loading argument: '+ line.strip())
             exec(line.strip())
   
-
-#################
-#################
-#fastqs_path='/home/javiernunezgarcia/try'
-#fastas_folder='/home/javiernunezgarcia/try'
-#R1_pattern="_R1"
-#reference_genome="/home/javiernunezgarcia/mnt/fsx-016/BactiPipes_MA2017/NCBI_Genomes/E.coli_MG1655_U00096.3.fasta"
-#out_file='/home/javiernunezgarcia/try/qc.csv'
-#ncores=2
 
 print("***** Checking samples to be run")
 fastq_R1s=find_file("*"+R1_pattern+"*.fastq.gz", fastqs_path)
