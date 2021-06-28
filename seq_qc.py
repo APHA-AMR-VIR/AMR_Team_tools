@@ -157,12 +157,12 @@ with open(arguments_file,'r') as f:
 
 #################
 #################
-fastqs_path='/home/javiernunezgarcia/try'
-fastas_folder='/home/javiernunezgarcia/try'
-R1_pattern="_R1"
-reference_genome="/home/javiernunezgarcia/mnt/fsx-016/BactiPipes_MA2017/NCBI_Genomes/E.coli_MG1655_U00096.3.fasta"
-out_file='/home/javiernunezgarcia/try/qc.csv'
-ncores=2
+#fastqs_path='/home/javiernunezgarcia/try'
+#fastas_folder='/home/javiernunezgarcia/try'
+#R1_pattern="_R1"
+#reference_genome="/home/javiernunezgarcia/mnt/fsx-016/BactiPipes_MA2017/NCBI_Genomes/E.coli_MG1655_U00096.3.fasta"
+#out_file='/home/javiernunezgarcia/try/qc.csv'
+#ncores=2
 
 print("***** Checking samples to be run")
 fastq_R1s=find_file("*"+R1_pattern+"*.fastq.gz", fastqs_path)
