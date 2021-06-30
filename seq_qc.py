@@ -109,6 +109,22 @@ def contigs_checker(fname,len_ref):
     ng50=lens[cont-1]
     return([len(seqs),smaller_500,assembly_len,min(lens),max(lens),round(np.mean(lens)),n50,ng50])
 
+def filter_contigs(fin,fout,min_size=300):
+    ids,seqs=readfnaFileSeveralSequences(fin)
+    lines=[]
+    for i in range(len(ids)):
+        if len(seqs[i])>=300:
+            if i==0:
+                lines.append(">"+ids[i])
+            else:
+                lines.append("\n"+">"+ids[i])
+            for j in range(0,len(seqs[i]),60):
+                lines.append("\n"+seqs[i][j:j+60])
+
+    fileOut = open(fout, 'w')
+    fileOut.writelines(lines)
+    fileOut.close()        
+
 
 def one_sample(row):
     try:

@@ -15,3 +15,5 @@ out_file='/home/javiernunezgarcia/try/robert'
 
 ## number of cores you want to use
 ncores=1
+##minimum contig len to filter the fasta files
+min_len=500
