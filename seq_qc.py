@@ -103,14 +103,14 @@ def contigs_checker(fname,len_ref):
     ### NG50
     cont=0
     sum_ng50=0
-    while sum_ng50<=len_ref/2:
+    while sum_ng50<=len_ref/2  and cont<len(lens):
         sum_ng50=sum_ng50+lens[cont]
         cont=cont+1
     ng50=lens[cont-1]
     return([len(seqs),smaller_500,assembly_len,min(lens),max(lens),round(np.mean(lens)),n50,ng50])
 
 def filter_contigs(fin,fout,min_size=300):
-    ids,seqs=readfnaFileSeveralSequences(fin)
+    ids,seqs=read_contigs(fin)
     lines=[]
     for i in range(len(ids)):
         if len(seqs[i])>=300:
@@ -133,6 +133,8 @@ def one_sample(row):
         r2=os.path.join(fastqs_path,row[1])
         fasta=os.path.join(fastas_folder,row[2])
         contigs_res=contigs_checker(fasta,len_ref)
+        if int(min_len)>0:
+            filter_contigs(fasta,os.path.join(fastas_folder,row[2].split(".")[0]+"_filtered.fasta"),min_len)
         fastq_r1_res=qc_fastq(r1,len_ref)
         fastq_r2_res=qc_fastq(r2,len_ref)
         st_cov=round((fastq_r1_res[0]+fastq_r1_res[0])*np.mean([fastq_r1_res[1],fastq_r1_res[1]])/len_ref,2)
@@ -195,7 +197,7 @@ for fastq_R1 in fastq_R1s:
         print("More than one assembly for: "+fastq_R1)
        
     if R2_ok=="yes" and fasta_ok=="yes":
-        fastq_to_process.append([fastq_R1,fastq_R1,fasta_file])
+        fastq_to_process.append([fastq_R1,fastq_R2,fasta_file])
         
 print("***** Processing "+str(len(fastq_to_process))+" samples.")
 
