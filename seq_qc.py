@@ -107,7 +107,20 @@ def contigs_checker(fname,len_ref):
         sum_ng50=sum_ng50+lens[cont]
         cont=cont+1
     ng50=lens[cont-1]
-    return([len(seqs),smaller_500,assembly_len,min(lens),max(lens),round(np.mean(lens)),n50,ng50])
+    #### mean cov
+    sum_lxd=0
+    sum_l=0
+    mean_cov="NA"
+    for idi in ids:
+        if "_d=" in idi and "_l=" in idi:
+            l=int([x for x in idi.split("_") if "l=" in x][0].split("=")[1])
+            d=float([x for x in idi.split("_") if "d=" in x][0].split("=")[1].split("x")[0])
+            sum_l=sum_l+l
+            sum_lxd=sum_lxd+l*d
+    if sum_l>0:
+        mean_cov=round(sum_lxd/sum_l,2)
+    
+    return([len(seqs),smaller_500,assembly_len,mean_cov,min(lens),max(lens),round(np.mean(lens)),n50,ng50])
 
 def filter_contigs(fin,fout,min_size=300):
     ids,seqs=read_contigs(fin)
@@ -203,7 +216,7 @@ print("***** Processing "+str(len(fastq_to_process))+" samples.")
 
 
 ### initiating the output table 
-tab=[["sample_name","reference","reference_length","Contigs_file","#contigs","#contigs<500","assembly_length","minimum_length","max_length","average_length","N50","NG50","R1_fastq","R1_#reads","R1_Average_read_length","R2_fastq","R2_#reads","R2_Average_read_length","Estimated_depth"]]
+tab=[["sample_name","reference","reference_length","Contigs_file","#contigs","#contigs<500","assembly_length","mean_depth","minimum_length","max_length","average_length","N50","NG50","R1_fastq","R1_#reads","R1_Average_read_length","R2_fastq","R2_#reads","R2_Average_read_length","Estimated_depth"]]
 
 ref_name=reference_genome.split(os.sep)[-1] 
 len_ref=fasta_len(reference_genome)

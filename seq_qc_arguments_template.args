@@ -8,10 +8,10 @@ fastas_folder='/home/javiernunezgarcia/Chris/fastqs'
 R1_pattern="_R1_"
 
 ## reference genome
-reference_genome="/home/javiernunezgarcia/mnt/fsx-016/BactiPipes_MA2017/NCBI_Genomes/Salmonella.enterica.Typhimurium_LT2_NC003197.2.fasta"
+reference_genome="/home/javiernunezgarcia/Chris/GCF_001457695.1_NCTC11351_genomic.fna"
 
 ## path and name of the documents that will contain the results
-out_file='/home/javiernunezgarcia/Chris/qc_metrics_2.csv'
+out_file='/home/javiernunezgarcia/Chris/qc_metrics_campy.csv'
 
 ## number of cores you want to use
 ncores=1
