@@ -33,12 +33,12 @@ def one_sample(row):
     long_reads_file=os.path.join(long_reads_path,row[2])
     if os.path.isfile(r1) and os.path.isfile(r2):
         if os.path.isfile(long_reads_file):
-            getCMD(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 1 --vcf"])
+            getCMD(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
         else:
-            getCMD(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 1 --vcf"])
+            getCMD(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
         
         new_fasta_name=os.path.join(fastas_dir,sample_name+".fasta")
-        new_log_name=os.path.join(fastas_dir,sample_name+"unicycler.log")
+        new_log_name=os.path.join(fastas_dir,sample_name+"_unicycler.log")
         getCMD(["cp",os.path.join(fastas_dir,sample_name,"assembly.fasta"),new_fasta_name])
         getCMD(["cp",os.path.join(fastas_dir,sample_name,"unicycler.log"),new_log_name])
         os.system('sed -i "s/>/>'+sample_name+' N/g" '+new_fasta_name)

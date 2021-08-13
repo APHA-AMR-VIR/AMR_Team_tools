@@ -35,19 +35,20 @@ if len(args)>1:
     outfile=args[2]
 else:
     outfile='/home/javiernunezgarcia/fastqs_at_IMPART_2018.csv'
-    mother_path='/home/javiernunezgarcia/mnt/fsx-016/Non-Defra_Projects/EU_Projects/IMPART_2018'
+    mother_path='/home/javiernunezgarcia/mnt/fsx-016'
 
-#### making a list of all the fastq files (faster if we look each sample one by one)
-fils=glob.glob(mother_path+'/**/*R1*.fastq.gz', recursive=True)
-samples=set([fil.split(os.sep)[-1].split("_")[0] for fil in fils])
-
-tab=[["sample","R1 fastqs"]]
-for sam in samples:
-    tab.append([sam,""])
-    sub_fils=[fil for fil in fils if fil.split(os.sep)[-1].split("_")[0]==sam]
-    for s in sub_fils:
-        tab.append(["",s,int(os.path.getsize(s))])
+#_alignment_stats.csv.gz
+#.pileup.vcf.gz
+#.flt.snp
+#.sorted.bam
+#.sorted.bam.bai    
     
-writecsv(outfile,tab)             
+#### making a list of all the fastq files (faster if we look each sample one by one)
+pileup_fils=glob.glob(mother_path+'/**/*.pileup.vcf.gz', recursive=True)
+alignment_fils=glob.glob(mother_path+'/**/*_alignment_stats.csv.gz', recursive=True)
+fltsnp_fils=glob.glob(mother_path+'/**/*.flt.snp', recursive=True)
+sortedbam_fils=glob.glob(mother_path+'/**/*.sorted.bam', recursive=True)
+sortedbambai_fils=glob.glob(mother_path+'/**/*.sorted.bam.bai', recursive=True)
+
 
 
