@@ -30,9 +30,9 @@ def one_sample(row):
     sample_name=row[0].split("_")[0]
     r1=os.path.join(fastqs_path,row[0])
     r2=os.path.join(fastqs_path,row[1])
-    long_reads_file=os.path.join(long_reads_path,row[2])
     if os.path.isfile(r1) and os.path.isfile(r2):
-        if os.path.isfile(long_reads_file):
+        if row[2]!="none":
+            long_reads_file=os.path.join(long_reads_path,row[2])
             getCMD(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
         else:
             getCMD(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
@@ -85,6 +85,7 @@ print("***** Checking samples to be run")
 fastq_R1s=find_file("*"+R1_pattern+"*.fastq.gz", fastqs_path)
 R2_pattern=R1_pattern.replace("R1","R2")
 fastq_to_process=[]
+summary=[]
 
 for fastq_R1 in fastq_R1s:
     fastq_R2=fastq_R1.replace(R1_pattern,R2_pattern)
@@ -96,7 +97,7 @@ for fastq_R1 in fastq_R1s:
         print("Missing R2 fastq for file: "+fastq_R1)
         
     if os.path.exists(long_reads_path):    
-        long_reads_file=[f for f in listdir(long_reads_path) if "long-"+sample_name==f[:len("long-"+sample_name)]]    
+        long_reads_file=[f for f in listdir(long_reads_path) if sample_name==f[:len(sample_name)]]    
         if len(long_reads_file)==1:
             long_reads_file_ok="found"
             long_reads_file=long_reads_file[0]
@@ -109,8 +110,10 @@ for fastq_R1 in fastq_R1s:
     else:
         print("Only short reads files detected")
         long_reads_file="none"
-    fastq_to_process.append([fastq_R1,fastq_R2,long_reads_file])
-    print([fastq_R1,fastq_R2,long_reads_file])
+    if R2_ok=="found" and (long_reads_file_ok=="found" or long_reads_file=="none"):
+        fastq_to_process.append([fastq_R1,fastq_R2,long_reads_file])
+    summary.append([fastq_R1,R2_ok,long_reads_file_ok])
+    
 print("Check file "+os.path.join(out_folder,"summary.csv"))            
 
 print(fastq_to_process)
