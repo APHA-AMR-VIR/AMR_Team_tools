@@ -117,7 +117,7 @@ for fastq_R1 in fastq_R1s:
 print("Check file "+os.path.join(out_folder,"summary.csv"))            
 
 print(fastq_to_process)
-writeCSV(os.path.join(out_folder,"summary.csv"),[["R1","R2","Long_reads"]]+fastq_to_process)            
+writeCSV(os.path.join(out_folder,"summary.csv"),[["R1","R2_status","Long_reads_status"]]+summary)            
             
 ########################################
 
