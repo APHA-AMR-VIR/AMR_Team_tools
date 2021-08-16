@@ -25,30 +25,45 @@ def writecsv(fname,matrix):
         writer.writerows(matrix)
         print("file "+fname+" saved.")
         
-def run_cmd(lis):   ### this funtion takes a list of strings, concatenate them and run a command line
+def run_cmd(lis):
     print(" ".join(lis))
     os.system(" ".join(lis))
 
-args=sys.argv
-if len(args)>1:
-    mother_path=args[1]
-    outfile=args[2]
-else:
-    outfile='/home/javiernunezgarcia/fastqs_at_IMPART_2018.csv'
-    mother_path='/home/javiernunezgarcia/mnt/fsx-016'
+outfile='/home/javiernunezgarcia/files_to_delete.csv'
+outfile_summary='/home/javiernunezgarcia/files_to_delete_summary.csv'
+mother_paths=['/home/javiernunezgarcia/mnt/fsx-016',\
+              '/home/javiernunezgarcia/mnt/fsx-024',\
+              '/home/javiernunezgarcia/mnt/fsx-ranch-023']
 
-#_alignment_stats.csv.gz
-#.pileup.vcf.gz
-#.flt.snp
-#.sorted.bam
-#.sorted.bam.bai    
+fils_ends=['_alignment_stats.csv.gz',\
+           '.pileup.vcf.gz',\
+           '.pileup.vcf',\
+           '.flt.snp', \
+           '.snp',\
+           '.sorted.bam',\
+           '.sorted.bam.bai',\
+           '_DeletedSequences.csv',\
+           '_R1_fastqc.zip',\
+           '_R2_fastqc.zip',\
+           'Mapped_fastqs_Info.txt']  
+
+#'_alignment_stats.csv'
+
+tab=[["type","size in MB","file"]]
+s_tab=[["type","path","size in MB","#files"]]
+
+for fil_end in fils_ends:
+    for mother_path in mother_paths:
+        fils=glob.glob(mother_path+'/**/*'+fil_end, recursive=True)
+        sub_tab=[]
+        for fil in fils:
+            sub_tab.append([fil_end,round(os.path.getsize(fil)/float((1024*1024)),2),fil])
+        print(fil_end+"  "+mother_path+"   "+str(sum([x[1] for x in sub_tab]))+"   "+str(len(fils)))
+        s_tab.append([fil_end,mother_path,sum([x[1] for x in sub_tab]),str(len(fils))])    
+        tab=tab+sub_tab
+
+writecsv(outfile,tab)
+writecsv(outfile_summary,s_tab)
     
-#### making a list of all the fastq files (faster if we look each sample one by one)
-pileup_fils=glob.glob(mother_path+'/**/*.pileup.vcf.gz', recursive=True)
-alignment_fils=glob.glob(mother_path+'/**/*_alignment_stats.csv.gz', recursive=True)
-fltsnp_fils=glob.glob(mother_path+'/**/*.flt.snp', recursive=True)
-sortedbam_fils=glob.glob(mother_path+'/**/*.sorted.bam', recursive=True)
-sortedbambai_fils=glob.glob(mother_path+'/**/*.sorted.bam.bai', recursive=True)
-
 
 

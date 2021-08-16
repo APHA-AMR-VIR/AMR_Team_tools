@@ -1,14 +1,14 @@
 ## folder to the fastq files
-fastqs_path='/home/javiernunezgarcia/mnt/fsx-024/UoL_Salmonella_AGarcia_2019/RAW_WGS_DATA_DONOTEDIT/nanopore/NanoporeRAW/BL661'
+fastqs_path='/home/javiernunezgarcia/mnt/fsx-ranch-023/VM0533/Analysis/VM0533A_LukeR/OG0244_FSA_meats_work_2020/Colistin_Turkey_meat_2021'
 
 ## folder to the long reads fastq files
-long_reads_path='/home/javiernunezgarcia/mnt/fsx-024/UoL_Salmonella_AGarcia_2019/RAW_WGS_DATA_DONOTEDIT/nanopore/NanoporeRAW/BL661'
+long_reads_path='/home/javiernunezgarcia/mnt/fsx-016/RDVM0529/VM0529/2020_EU_Survey/Nanopore/150721_nanopore/fastq_pass/fastq'
 
 ## pattern to differentiate the R1 fastq files
 R1_pattern="_R1_"
 
 ## path and name of the documents that will contain the results
-out_folder='/home/javiernunezgarcia/angela_try'
+out_folder='/home/javiernunezgarcia/mcr_turkey'
 
 ## number of cores you want to use per sample
 ncores_per_sample=4
