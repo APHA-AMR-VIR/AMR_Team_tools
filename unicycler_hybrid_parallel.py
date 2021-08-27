@@ -100,7 +100,7 @@ for fastq_R1 in fastq_R1s:
         print("Missing R2 fastq for file: "+fastq_R1)
         
     if os.path.exists(long_reads_path):    
-        long_reads_file=[f for f in listdir(long_reads_path) if sample_name==f[:len(sample_name)]]  
+        long_reads_file=[f for f in listdir(long_reads_path) if sample_name==f[:len(sample_name)] and R2_pattern not in f and R1_pattern not in f]  
         if len(long_reads_file)==1:
             long_reads_file_ok="found"
             long_reads_file=long_reads_file[0]
@@ -123,7 +123,7 @@ print("Check file "+os.path.join(out_folder,"summary.csv"))
 print(fastq_to_process)
 writeCSV(os.path.join(out_folder,"summary.csv"),[["R1","R2_status","Long_reads_status"]]+summary)            
 
-'''           
+     
 ########################################
 random.seed(datetime.now())
 fastas_dir="~/uc_fastas_"+str(random.randint(0,10000000))
@@ -135,5 +135,4 @@ result=pool.map(one_sample,fastq_to_process)
 
 
 getCMD(["cp -r",fastas_dir,out_folder])
-'''
 
