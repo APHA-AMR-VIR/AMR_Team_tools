@@ -7,6 +7,9 @@
 import sys,os,os.path,fnmatch,csv
 import multiprocessing as mp
 from os import listdir
+import random
+from datetime import datetime
+
 
 
 def writeCSV(fname,matrix):
@@ -78,7 +81,7 @@ with open(arguments_file,'r') as f:
             exec(line.strip())
 ########################################
 if not os.path.exists(out_folder):
-    getCMD(["mkdir",out_folder])
+    getCMD(["mkdir -p",out_folder])
             
             
 print("***** Checking samples to be run")
@@ -97,7 +100,7 @@ for fastq_R1 in fastq_R1s:
         print("Missing R2 fastq for file: "+fastq_R1)
         
     if os.path.exists(long_reads_path):    
-        long_reads_file=[f for f in listdir(long_reads_path) if sample_name==f[:len(sample_name)]]    
+        long_reads_file=[f for f in listdir(long_reads_path) if sample_name==f[:len(sample_name)]]  
         if len(long_reads_file)==1:
             long_reads_file_ok="found"
             long_reads_file=long_reads_file[0]
@@ -110,7 +113,8 @@ for fastq_R1 in fastq_R1s:
     else:
         print("Only short reads files detected")
         long_reads_file="none"
-    if R2_ok=="found" and (long_reads_file_ok=="found" or long_reads_file=="none"):
+        long_reads_file_ok=="none"
+    if R2_ok=="found" and (long_reads_file_ok in ["found","none"] or long_reads_file=="none"):
         fastq_to_process.append([fastq_R1,fastq_R2,long_reads_file])
     summary.append([fastq_R1,R2_ok,long_reads_file_ok])
     
@@ -118,10 +122,11 @@ print("Check file "+os.path.join(out_folder,"summary.csv"))
 
 print(fastq_to_process)
 writeCSV(os.path.join(out_folder,"summary.csv"),[["R1","R2_status","Long_reads_status"]]+summary)            
-            
-########################################
 
-fastas_dir="~/uc_fastas"
+'''           
+########################################
+random.seed(datetime.now())
+fastas_dir="~/uc_fastas_"+str(random.randint(0,10000000))
 if not os.path.exists(fastas_dir):
     getCMD(["mkdir",fastas_dir])
 
@@ -130,5 +135,5 @@ result=pool.map(one_sample,fastq_to_process)
 
 
 getCMD(["cp -r",fastas_dir,out_folder])
-
+'''
 

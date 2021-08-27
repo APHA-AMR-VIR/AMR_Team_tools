@@ -1,21 +1,21 @@
 ## folder to the fastq files
-fastqs_path='/home/javiernunezgarcia/mnt/fsx-ranch-023/VM0533/Analysis/VM0533A_LukeR/OG0244_FSA_meats_work_2020/Colistin_Turkey_meat_2021'
+fastqs_path='/home/javiernunezgarcia/mnt/fsx-ranch-023/VM0533/Analysis/VM0533A_LukeR/OG0244_FSA_meats_work_2020/Javi_fastq_temp'
 
 ## folder to the long reads fastq files
-long_reads_path='/home/javiernunezgarcia/mnt/fsx-016/RDVM0529/VM0529/2020_EU_Survey/Nanopore/150721_nanopore/fastq_pass/fastq'
-
+#long_reads_path='/home/javiernunezgarcia/mnt/fsx-016/RDVM0529/VM0529/2020_EU_Survey/Nanopore/150721_nanopore/fastq_pass/fastq'
+long_reads_path=''
 ## pattern to differentiate the R1 fastq files
 R1_pattern="_R1_"
 
 ## path and name of the documents that will contain the results
-out_folder='/home/javiernunezgarcia/mcr_turkey'
+out_folder='/home/javiernunezgarcia/mcr_all'
 
 ## number of cores you want to use per sample
-ncores_per_sample=4
+ncores_per_sample=5
 
 ## number of cores to use (number of samples run in parallel)
 ## (ncores_per_sample x ncores) should not exceed the number of cores in the instance
-ncores=1
+ncores=6
 
 
 
