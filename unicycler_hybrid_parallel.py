@@ -25,8 +25,11 @@ def find_file(pattern, path):
             result.append(f) #os.path.join(root, name))
     return result
 
-def getCMD(lis):
-    print(" ".join(lis))
+def run_cmd(lis,ver=1):
+    if ver==1:
+        print("********************************")
+        print(" ".join(lis))
+        print("********************************")
     os.system(" ".join(lis))
     
 def one_sample(row):
@@ -36,21 +39,21 @@ def one_sample(row):
     if os.path.isfile(r1) and os.path.isfile(r2):
         if row[2]!="none":
             long_reads_file=os.path.join(long_reads_path,row[2])
-            getCMD(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
+            run_cmd(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
         else:
-            getCMD(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
+            run_cmd(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
         
         new_fasta_name=os.path.join(fastas_dir,sample_name+".fasta")
         new_log_name=os.path.join(fastas_dir,sample_name+"_unicycler.log")
-        getCMD(["cp",os.path.join(fastas_dir,sample_name,"assembly.fasta"),new_fasta_name])
-        getCMD(["cp",os.path.join(fastas_dir,sample_name,"unicycler.log"),new_log_name])
+        run_cmd(["cp",os.path.join(fastas_dir,sample_name,"assembly.fasta"),new_fasta_name])
+        run_cmd(["cp",os.path.join(fastas_dir,sample_name,"unicycler.log"),new_log_name])
         os.system('sed -i "s/>/>'+sample_name+' N/g" '+new_fasta_name)
         os.system('sed -i "s/length/l/g" '+new_fasta_name)
         os.system('sed -i "s/depth/d/g" '+new_fasta_name)
         os.system('sed -i "s/circular=true/cir/g" '+new_fasta_name)
         os.system('sed -i "s/ /_/g" '+new_fasta_name)
         
-        getCMD(["rm -r",os.path.join(fastas_dir,sample_name)])
+        run_cmd(["rm -r",os.path.join(fastas_dir,sample_name)])
     else:
         print("One of the fastq files doesn't exist")
 
@@ -79,11 +82,13 @@ with open(arguments_file,'r') as f:
         if line[0] not in ['\n',' ','#']:
             print('Loading argument: '+ line.strip())
             exec(line.strip())
-########################################
+
+############### creating the output directory
 if not os.path.exists(out_folder):
-    getCMD(["mkdir -p",out_folder])
+    run_cmd(["mkdir -p",out_folder])
+run_cmd(['cp ',arguments_file,os.path.join(out_folder,arguments_file.split(os.sep)[-1])])
             
-            
+###############checking the samples to run            
 print("***** Checking samples to be run")
 fastq_R1s=find_file("*"+R1_pattern+"*.fastq.gz", fastqs_path)
 R2_pattern=R1_pattern.replace("R1","R2")
@@ -124,15 +129,22 @@ print(fastq_to_process)
 writeCSV(os.path.join(out_folder,"summary.csv"),[["R1","R2_status","Long_reads_status"]]+summary)            
 
      
-########################################
+######################## creating a temporary directory in the home directory with a random name
 random.seed(datetime.now())
 fastas_dir="~/uc_fastas_"+str(random.randint(0,10000000))
 if not os.path.exists(fastas_dir):
-    getCMD(["mkdir",fastas_dir])
+    run_cmd(["mkdir",fastas_dir])
 
+######################## running a pool of samples
 pool=mp.Pool(int(ncores))
 result=pool.map(one_sample,fastq_to_process)
 
+######################## copying the results into the output directory
+run_cmd(["cp -r",fastas_dir,out_folder])
 
-getCMD(["cp -r",fastas_dir,out_folder])
+########################deleting the temporary directory
+#run_cmd(["rm -r",fastas_dir])
+
+
+
 
