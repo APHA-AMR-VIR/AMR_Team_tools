@@ -118,9 +118,10 @@ for fastq_R1 in fastq_R1s:
     else:
         print("Only short reads files detected")
         long_reads_file="none"
-        long_reads_file_ok=="none"
+        long_reads_file_ok="none"
     if R2_ok=="found" and (long_reads_file_ok in ["found","none"] or long_reads_file=="none"):
         fastq_to_process.append([fastq_R1,fastq_R2,long_reads_file])
+    
     summary.append([fastq_R1,R2_ok,long_reads_file_ok])
     
 print("Check file "+os.path.join(out_folder,"summary.csv"))            
