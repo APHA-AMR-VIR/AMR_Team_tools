@@ -9,6 +9,7 @@ import multiprocessing as mp
 from os import listdir
 import random
 from datetime import datetime
+from pathlib import Path
 
 
 
@@ -34,28 +35,29 @@ def run_cmd(lis,ver=1):
     
 def one_sample(row):
     sample_name=row[0].split("_")[0]
-    r1=os.path.join(fastqs_path,row[0])
-    r2=os.path.join(fastqs_path,row[1])
-    if os.path.isfile(r1) and os.path.isfile(r2):
-        if row[2]!="none":
-            long_reads_file=os.path.join(long_reads_path,row[2])
-            run_cmd(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
+    if not os.path.isfile(os.path.join(fastas_dir,sample_name+".fasta")):
+        r1=os.path.join(fastqs_path,row[0])
+        r2=os.path.join(fastqs_path,row[1])
+        if os.path.isfile(r1) and os.path.isfile(r2):
+            if row[2]!="none":
+                long_reads_file=os.path.join(long_reads_path,row[2])
+                run_cmd(["unicycler -1",r1,"-2",r2,"-l",long_reads_file,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
+            else:
+                run_cmd(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
+            
+            new_fasta_name=os.path.join(fastas_dir,sample_name+".fasta")
+            new_log_name=os.path.join(fastas_dir,sample_name+"_unicycler.log")
+            run_cmd(["cp",os.path.join(fastas_dir,sample_name,"assembly.fasta"),new_fasta_name])
+            run_cmd(["cp",os.path.join(fastas_dir,sample_name,"unicycler.log"),new_log_name])
+            os.system('sed -i "s/>/>'+sample_name+' N/g" '+new_fasta_name)
+            os.system('sed -i "s/length/l/g" '+new_fasta_name)
+            os.system('sed -i "s/depth/d/g" '+new_fasta_name)
+            os.system('sed -i "s/circular=true/cir/g" '+new_fasta_name)
+            os.system('sed -i "s/ /_/g" '+new_fasta_name)
+            
+            run_cmd(["rm -r",os.path.join(fastas_dir,sample_name)])
         else:
-            run_cmd(["unicycler -1",r1,"-2",r2,"-o",os.path.join(fastas_dir,sample_name),"-t",str(ncores_per_sample),"--keep 0"])
-        
-        new_fasta_name=os.path.join(fastas_dir,sample_name+".fasta")
-        new_log_name=os.path.join(fastas_dir,sample_name+"_unicycler.log")
-        run_cmd(["cp",os.path.join(fastas_dir,sample_name,"assembly.fasta"),new_fasta_name])
-        run_cmd(["cp",os.path.join(fastas_dir,sample_name,"unicycler.log"),new_log_name])
-        os.system('sed -i "s/>/>'+sample_name+' N/g" '+new_fasta_name)
-        os.system('sed -i "s/length/l/g" '+new_fasta_name)
-        os.system('sed -i "s/depth/d/g" '+new_fasta_name)
-        os.system('sed -i "s/circular=true/cir/g" '+new_fasta_name)
-        os.system('sed -i "s/ /_/g" '+new_fasta_name)
-        
-        run_cmd(["rm -r",os.path.join(fastas_dir,sample_name)])
-    else:
-        print("One of the fastq files doesn't exist")
+            print("One of the fastq files doesn't exist")
 
 
 ###########Command line arguments parshing
@@ -132,7 +134,7 @@ writeCSV(os.path.join(out_folder,"summary.csv"),[["R1","R2_status","Long_reads_s
      
 ######################## creating a temporary directory in the home directory with a random name
 random.seed(datetime.now())
-fastas_dir="~/uc_fastas_"+str(random.randint(0,10000000))
+fastas_dir=os.path.join(str(Path.home()),"uc_fastas"+str(random.randint(0,10000000)))
 if not os.path.exists(fastas_dir):
     run_cmd(["mkdir",fastas_dir])
 

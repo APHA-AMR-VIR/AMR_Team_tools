@@ -1,5 +1,5 @@
 ## folder to the fastq files
-fastqs_path='/home/javiernunezgarcia/mnt/fsx-ranch-023/VM0533/Analysis/VM0533A_LukeR/OG0244_FSA_meats_work_2020/Javi_fastq_temp'
+fastqs_path='/home/javiernunezgarcia/mnt/s3-csu-001/VM0533A/NB501786_0335'
 
 ## folder to the long reads fastq files
 #long_reads_path='/home/javiernunezgarcia/mnt/fsx-016/RDVM0529/VM0529/2020_EU_Survey/Nanopore/150721_nanopore/fastq_pass/fastq'
@@ -8,7 +8,7 @@ long_reads_path=''
 R1_pattern="_R1_"
 
 ## path and name of the documents that will contain the results
-out_folder='/home/javiernunezgarcia/mcr_all'
+out_folder='/home/javiernunezgarcia/indra_assemblies'
 
 ## number of cores you want to use per sample
 ncores_per_sample=5

@@ -1,0 +1,17 @@
+## data_base folder
+database_folder='/home/javiernunezgarcia/mnt/fsx-023/BactiPipes_SCE3/Programs/Kraken2/standard_db_2021-05-17'
+
+## folder to the fastq files
+fastqs_path='/home/javiernunezgarcia/mnt/s3-csu-001/VM0533A/NB501786_0335'
+
+## pattern to differentiate the R1 fastq files
+R1_pattern="_R1_"
+
+## path and name of the documents that will contain the results
+out_folder='/home/javiernunezgarcia/mnt/fsx-023/VM0533/Analysis/Salmonella_ResAlert_May2021LD/1.Farm_investigation_2021/kraken3'
+
+## number of threads
+threads=32
+
+
+

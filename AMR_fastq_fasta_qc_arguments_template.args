@@ -1,0 +1,20 @@
+## folder to the fastq files
+fastqs_path='/home/javiernunezgarcia/mnt/s3-csu-001/VM0533A/NB501786_0335'
+
+## folder to the fasta files
+fastas_folder='/home/javiernunezgarcia/indra_assemblies/uc_fastas_9059482'
+
+## pattern to differentiate the R1 fastq files
+R1_pattern="_R1_"
+
+## reference genome
+reference_genome="/home/javiernunezgarcia/mnt/fsx-023/BactiPipes_MA2017/NCBI_Genomes/E.coli_MG1655_U00096.3.fasta"
+
+## path and name of the documents that will contain the results
+out_file='/home/javiernunezgarcia/indra_assemblies/fastas_qc_metrics.csv'
+
+## number of cores you want to use
+ncores=10
+
+##minimum contig len to filter the fasta files
+min_len=0

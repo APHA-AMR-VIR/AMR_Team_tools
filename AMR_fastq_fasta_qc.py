@@ -126,7 +126,7 @@ def filter_contigs(fin,fout,min_size=300):
     ids,seqs=read_contigs(fin)
     lines=[]
     for i in range(len(ids)):
-        if len(seqs[i])>=300:
+        if len(seqs[i])>=min_size:
             if i==0:
                 lines.append(">"+ids[i])
             else:
@@ -166,6 +166,7 @@ R1_pattern=""
 reference_genome=""
 out_file=""
 ncores=1
+min_len=0
 
 args=sys.argv
 if len(args)>1:
