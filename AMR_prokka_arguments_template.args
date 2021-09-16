@@ -1,0 +1,18 @@
+## folder to the fastq files
+fastas_path='/home/javiernunezgarcia/mnt/fsx-016/javi_temp/mcr1_fsa_analysis/fastas/try'
+
+##
+extension_fastas=["fasta","fa","fna"]
+
+## path and name of the documents that will contain the results
+out_folder='/home/javiernunezgarcia/prokka_try'
+
+## number of cores you want to use per sample
+ncores_per_sample=2
+
+## number of cores to use (number of samples run in parallel)
+## (ncores_per_sample x ncores) should not exceed the number of cores in the instance
+ncores=2
+
+
+
