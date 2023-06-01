@@ -10,7 +10,7 @@ from os import listdir
 import random
 from datetime import datetime
 from pathlib import Path
-
+import subprocess
 
 
 def writeCSV(fname,matrix):
@@ -38,6 +38,15 @@ def one_sample(row):
     if not os.path.isfile(os.path.join(aux_dir,sample_name+".fasta")):
         r1=os.path.join(fastqs_path,row[0])
         r2=os.path.join(fastqs_path,row[1])
+        unicycler_version_command = subprocess.check_output(['unicycler', '--version'])
+        unicycler_version = unicycler_version_command.decode('utf-8')
+        unicycler_version = unicycler_version.replace(" ","_")
+        spades_version_command = subprocess.check_output(['spades.py', '--version'])
+        spades_version = spades_version_command.decode('utf-8')
+        spades_version = spades_version.replace(" genome assembler ","_")
+        versions= unicycler_version+spades_version
+        versions=versions.replace('\n', '_', 1).replace('\n', '', 1)
+        
         if os.path.isfile(r1) and os.path.isfile(r2):
             if row[2]!="none":
                 long_reads_file=os.path.join(long_reads_path,row[2])
@@ -54,6 +63,7 @@ def one_sample(row):
             os.system('sed -i "s/depth/d/g" '+new_fasta_name)
             os.system('sed -i "s/circular=true/cir/g" '+new_fasta_name)
             os.system('sed -i "s/ /_/g" '+new_fasta_name)
+            os.system('sed -i "1s/$/_'+versions+'/" '+new_fasta_name)
             
             run_cmd(["rm -r",os.path.join(aux_dir,sample_name)])
         else:
@@ -146,7 +156,3 @@ result=pool.map(one_sample,fastq_to_process)
 run_cmd(["cp -r",aux_dir+'/*',out_folder+'/.'])
 ########################deleting the temporary directory
 run_cmd(["rm -r",aux_dir])
-
-
-
-
